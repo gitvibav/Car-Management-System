@@ -20,9 +20,10 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
-	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
@@ -64,6 +65,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.Use(otelmux.Middleware("Car-Management-System"))
+	router.Use(middleware.MetricMiddleware)
 
 	schemaFile := "store/schema.sql"
 	if err := executeSchemaFile(db, schemaFile); err != nil {
@@ -86,6 +88,8 @@ func main() {
 	protected.HandleFunc("/engine", engineHandler.CreateEngine).Methods("POST")
 	protected.HandleFunc("/engine/{id}", engineHandler.UpdateEngine).Methods("PUT")
 	protected.HandleFunc("/engine/{id}", engineHandler.DeleteEngine).Methods("DELETE")
+
+	router.Handle("/metrics", promhttp.Handler())
 
 	port := os.Getenv("PORT")
 	if port == "" {
