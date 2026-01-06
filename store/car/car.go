@@ -14,7 +14,7 @@ type Store struct {
 	db *sql.DB
 }
 
-func new(db *sql.DB) Store {
+func New(db *sql.DB) Store {
 	return Store{db: db}
 }
 
@@ -157,7 +157,7 @@ func (s Store) CreateCar(ctx context.Context, carReq *models.CarRequest) (models
 		err = tx.Commit()
 	}()
 
-	query := `INSERT INTO car (id, name, year, brand, fuel_type, engine_id, price, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)RETURNING id, name, year, brand, fuel_type. engine_id, price, created_at, updated_at`
+	query := `INSERT INTO car (id, name, year, brand, fuel_type, engine_id, price, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)RETURNING id, name, year, brand, fuel_type, engine_id, price, created_at, updated_at`
 
 	err = tx.QueryRowContext(ctx, query,
 		&newCar.ID,
@@ -204,10 +204,10 @@ func (s Store) UpdateCar(ctx context.Context, id string, carReq *models.CarReque
 	}()
 
 	query := `
-		UPDATED car 
-		SET name = $2, year = $3, fuel_type = $5, engine_id = $6, price = $7, updated_at = $8
+		UPDATE car 
+		SET name = $2, year = $3, brand = $4, fuel_type = $5, engine_id = $6, price = $7, updated_at = $8
 		WHERE id = $1
-		RETURN id, name, year, brand, fuel_type, engine_id, price, created_at, updated_at
+		RETURNING id, name, year, brand, fuel_type, engine_id, price, created_at, updated_at
 	`
 
 	err = tx.QueryRowContext(ctx, query,

@@ -87,7 +87,7 @@ func validateBrand(brand string) error {
 }
 
 func validateFuelType(fuelType string) error {
-	validateFuelTypes := []string, {"Petrol", "Diesel", "Electric", "Hybrid"}
+	validateFuelTypes := []string{"Petrol", "Diesel", "Electric", "Hybrid"}
 	for _, validType := range validateFuelTypes {
 		if fuelType == validType {
 			return nil
@@ -116,7 +116,7 @@ func validateEngine(engine Engine) error {
 	return nil
 }
 
-func validatePrice(price float64) error {
+func validatePrice(price float32) error {
 	if price <= 0 {
 		return errors.New("Price must be greater than zero")
 	}
