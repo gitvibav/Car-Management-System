@@ -17,7 +17,7 @@ A comprehensive RESTful API system for managing cars and engines, built with Go.
 - [Environment Variables](#environment-variables)
 - [Usage Examples](#usage-examples)
 
-## 🎯 Overview
+## 🎯 Overview {#overview}
 
 The Car Management System is a Go-based REST API that provides comprehensive CRUD operations for managing cars and their associated engines. The system includes:
 
@@ -28,7 +28,7 @@ The Car Management System is a Go-based REST API that provides comprehensive CRU
 - **Database**: PostgreSQL for persistent data storage
 - **Docker**: Containerized deployment with Docker Compose
 
-## ✨ Features
+## ✨ Features {#features}
 
 - ✅ Full CRUD operations for Cars and Engines
 - ✅ JWT-based authentication and authorization
@@ -41,7 +41,7 @@ The Car Management System is a Go-based REST API that provides comprehensive CRU
 - ✅ Docker containerization
 - ✅ Middleware for authentication and metrics
 
-## 🏗️ Architecture
+## 🏗️ Architecture {#architecture}
 
 The system follows a layered architecture pattern:
 
@@ -75,16 +75,16 @@ graph TB
     Metrics --> Prometheus[Prometheus<br/>Port: 9090]
     Prometheus --> Grafana[Grafana<br/>Port: 3000]
     
-    style Client fill:#e1f5ff
-    style Router fill:#fff4e1
-    style Middleware fill:#ffe1f5
-    style HandlerLayer fill:#e1ffe1
-    style CarService fill:#f0e1ff
-    style EngineService fill:#f0e1ff
-    style DB fill:#ffe1e1
-    style Jaeger fill:#e1ffff
-    style Prometheus fill:#e1ffff
-    style Grafana fill:#e1ffff
+    style Client fill:#4a90e2,stroke:#2c5282,stroke-width:2px,color:#fff
+    style Router fill:#f5a623,stroke:#b7791f,stroke-width:2px,color:#fff
+    style Middleware fill:#e94b8b,stroke:#b8325f,stroke-width:2px,color:#fff
+    style HandlerLayer fill:#50c878,stroke:#2d8659,stroke-width:2px,color:#fff
+    style CarService fill:#9b59b6,stroke:#6c3483,stroke-width:2px,color:#fff
+    style EngineService fill:#9b59b6,stroke:#6c3483,stroke-width:2px,color:#fff
+    style DB fill:#e74c3c,stroke:#a93226,stroke-width:2px,color:#fff
+    style Jaeger fill:#16a085,stroke:#0e6655,stroke-width:2px,color:#fff
+    style Prometheus fill:#f39c12,stroke:#b9770e,stroke-width:2px,color:#fff
+    style Grafana fill:#3498db,stroke:#21618c,stroke-width:2px,color:#fff
 ```
 
 ### System Flow
@@ -137,10 +137,10 @@ graph TB
 
 ┌─────────────────────────────────────────────────────────────┐
 │              Observability Stack                            │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
-│  │    Jaeger    │  │  Prometheus  │  │   Grafana    │       │
+│  ┌──────────────┐  ┌──────────────┐  ┌───────────────┐      │
+│  │    Jaeger    │  │  Prometheus  │  │   Grafana     │      │
 │  │  (Tracing)   │  │  (Metrics)   │  │(Visualization)│      │
-│  └──────────────┘  └──────────────┘  └──────────────┘       │
+│  └──────────────┘  └──────────────┘  └───────────────┘      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -152,7 +152,7 @@ graph TB
 4. **Middleware**: Cross-cutting concerns (auth, metrics, tracing)
 5. **Observability**: Distributed tracing, metrics, and visualization
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack {#tech-stack}
 
 - **Language**: Go 1.25.5
 - **Web Framework**: Gorilla Mux
@@ -164,7 +164,7 @@ graph TB
 - **Containerization**: Docker & Docker Compose
 - **Environment Management**: godotenv
 
-## 📁 Project Structure
+## 📁 Project Structure {#project-structure}
 
 ```
 Car-Management-System/
@@ -211,7 +211,7 @@ Car-Management-System/
 └── main.go                    # Application entry point
 ```
 
-## 📦 Prerequisites
+## 📦 Prerequisites {#prerequisites}
 
 Before you begin, ensure you have the following installed:
 
@@ -220,7 +220,7 @@ Before you begin, ensure you have the following installed:
 - **PostgreSQL** (if running locally without Docker)
 - **Git**
 
-## 🚀 Getting Started
+## 🚀 Getting Started {#getting-started}
 
 ### 1. Clone the Repository
 
@@ -309,7 +309,7 @@ If you prefer to run locally:
    go run main.go
    ```
 
-## 📡 API Endpoints
+## 📡 API Endpoints {#api-endpoints}
 
 ### Authentication
 
@@ -451,7 +451,7 @@ GET /metrics
 
 Returns Prometheus-formatted metrics for monitoring.
 
-## 📊 Observability
+## 📊 Observability {#observability}
 
 The system includes comprehensive observability features:
 
@@ -498,7 +498,7 @@ Grafana provides visual dashboards for metrics:
 5. Set URL to `http://prometheus:9090` (or `http://localhost:9090` if running locally)
 6. Click **Save & Test**
 
-## 🗄️ Database Schema
+## 🗄️ Database Schema {#database-schema}
 
 ### Engine Table
 
@@ -534,7 +534,7 @@ CREATE TABLE car (
 
 The schema includes seed data with sample cars and engines that are automatically loaded on startup.
 
-## 🔐 Environment Variables
+## 🔐 Environment Variables {#environment-variables}
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -547,7 +547,7 @@ The schema includes seed data with sample cars and engines that are automaticall
 | `JAEGER_AGENT_HOST` | Jaeger agent host | `jaeger` |
 | `JAEGER_AGENT_PORT` | Jaeger agent port | `4318` |
 
-## 💡 Usage Examples
+## 💡 Usage Examples {#usage-examples}
 
 ### Example 1: Complete Car Creation Flow
 
