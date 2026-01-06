@@ -2,6 +2,7 @@ package main
 
 import (
 	"Car-Management-System/driver"
+	"Car-Management-System/middleware"
 	"database/sql"
 	"fmt"
 	"log"
@@ -10,6 +11,7 @@ import (
 
 	carHandler "Car-Management-System/handler/car"
 	engineHandler "Car-Management-System/handler/engine"
+	loginHandler "Car-Management-System/handler/login"
 	carService "Car-Management-System/service/car"
 	engineService "Car-Management-System/service/engine"
 	carStore "Car-Management-System/store/car"
@@ -45,16 +47,22 @@ func main() {
 		log.Fatal("Error while executing the schema file : ", err)
 	}
 
-	router.HandleFunc("/cars/{id}", carHandler.GetCarByID).Methods("GET")
-	router.HandleFunc("/cars", carHandler.GetCarByBrand).Methods("GET")
-	router.HandleFunc("/cars", carHandler.CreateCar).Methods("POST")
-	router.HandleFunc("/cars/{id}", carHandler.UpdateCar).Methods("PUT")
-	router.HandleFunc("/cars/{id}", carHandler.DeleteCar).Methods("DELETE")
+	router.HandleFunc("/login", loginHandler.LoginHandler).Methods("POST")
 
-	router.HandleFunc("/engine/{id}", engineHandler.GetEngineById).Methods("GET")
-	router.HandleFunc("/engine", engineHandler.CreateEngine).Methods("POST")
-	router.HandleFunc("/engine/{id}", engineHandler.UpdateEngine).Methods("PUT")
-	router.HandleFunc("/engine/{id}", engineHandler.DeleteEngine).Methods("DELETE")
+	protected := router.PathPrefix("/").Subrouter()
+
+	protected.Use(middleware.AuthMiddleware)
+
+	protected.HandleFunc("/cars/{id}", carHandler.GetCarByID).Methods("GET")
+	protected.HandleFunc("/cars", carHandler.GetCarByBrand).Methods("GET")
+	protected.HandleFunc("/cars", carHandler.CreateCar).Methods("POST")
+	protected.HandleFunc("/cars/{id}", carHandler.UpdateCar).Methods("PUT")
+	protected.HandleFunc("/cars/{id}", carHandler.DeleteCar).Methods("DELETE")
+
+	protected.HandleFunc("/engine/{id}", engineHandler.GetEngineById).Methods("GET")
+	protected.HandleFunc("/engine", engineHandler.CreateEngine).Methods("POST")
+	protected.HandleFunc("/engine/{id}", engineHandler.UpdateEngine).Methods("PUT")
+	protected.HandleFunc("/engine/{id}", engineHandler.DeleteEngine).Methods("DELETE")
 
 	port := os.Getenv("PORT")
 	if port == "" {
