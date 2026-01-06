@@ -17,7 +17,8 @@ A comprehensive RESTful API system for managing cars and engines, built with Go.
 - [Environment Variables](#environment-variables)
 - [Usage Examples](#usage-examples)
 
-## 🎯 Overview {#overview}
+<a id="overview"></a>
+## 🎯 Overview
 
 The Car Management System is a Go-based REST API that provides comprehensive CRUD operations for managing cars and their associated engines. The system includes:
 
@@ -28,7 +29,8 @@ The Car Management System is a Go-based REST API that provides comprehensive CRU
 - **Database**: PostgreSQL for persistent data storage
 - **Docker**: Containerized deployment with Docker Compose
 
-## ✨ Features {#features}
+<a id="features"></a>
+## ✨ Features
 
 - ✅ Full CRUD operations for Cars and Engines
 - ✅ JWT-based authentication and authorization
@@ -41,7 +43,8 @@ The Car Management System is a Go-based REST API that provides comprehensive CRU
 - ✅ Docker containerization
 - ✅ Middleware for authentication and metrics
 
-## 🏗️ Architecture {#architecture}
+<a id="architecture"></a>
+## 🏗️ Architecture
 
 The system follows a layered architecture pattern:
 
@@ -152,7 +155,8 @@ graph TB
 4. **Middleware**: Cross-cutting concerns (auth, metrics, tracing)
 5. **Observability**: Distributed tracing, metrics, and visualization
 
-## 🛠️ Tech Stack {#tech-stack}
+<a id="tech-stack"></a>
+## 🛠️ Tech Stack
 
 - **Language**: Go 1.25.5
 - **Web Framework**: Gorilla Mux
@@ -164,7 +168,8 @@ graph TB
 - **Containerization**: Docker & Docker Compose
 - **Environment Management**: godotenv
 
-## 📁 Project Structure {#project-structure}
+<a id="project-structure"></a>
+## 📁 Project Structure
 
 ```
 Car-Management-System/
@@ -211,7 +216,8 @@ Car-Management-System/
 └── main.go                    # Application entry point
 ```
 
-## 📦 Prerequisites {#prerequisites}
+<a id="prerequisites"></a>
+## 📦 Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -220,7 +226,8 @@ Before you begin, ensure you have the following installed:
 - **PostgreSQL** (if running locally without Docker)
 - **Git**
 
-## 🚀 Getting Started {#getting-started}
+<a id="getting-started"></a>
+## 🚀 Getting Started
 
 ### 1. Clone the Repository
 
@@ -309,7 +316,8 @@ If you prefer to run locally:
    go run main.go
    ```
 
-## 📡 API Endpoints {#api-endpoints}
+<a id="api-endpoints"></a>
+## 📡 API Endpoints
 
 ### Authentication
 
@@ -451,7 +459,8 @@ GET /metrics
 
 Returns Prometheus-formatted metrics for monitoring.
 
-## 📊 Observability {#observability}
+<a id="observability"></a>
+## 📊 Observability
 
 The system includes comprehensive observability features:
 
@@ -498,7 +507,8 @@ Grafana provides visual dashboards for metrics:
 5. Set URL to `http://prometheus:9090` (or `http://localhost:9090` if running locally)
 6. Click **Save & Test**
 
-## 🗄️ Database Schema {#database-schema}
+<a id="database-schema"></a>
+## 🗄️ Database Schema
 
 ### Engine Table
 
@@ -534,7 +544,8 @@ CREATE TABLE car (
 
 The schema includes seed data with sample cars and engines that are automatically loaded on startup.
 
-## 🔐 Environment Variables {#environment-variables}
+<a id="environment-variables"></a>
+## 🔐 Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
@@ -547,7 +558,8 @@ The schema includes seed data with sample cars and engines that are automaticall
 | `JAEGER_AGENT_HOST` | Jaeger agent host | `jaeger` |
 | `JAEGER_AGENT_PORT` | Jaeger agent port | `4318` |
 
-## 💡 Usage Examples {#usage-examples}
+<a id="usage-examples"></a>
+## 💡 Usage Examples
 
 ### Example 1: Complete Car Creation Flow
 
