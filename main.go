@@ -3,6 +3,7 @@ package main
 import (
 	"Car-Management-System/driver"
 	"Car-Management-System/middleware"
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -19,6 +20,13 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+	"go.opentelemetry.io/otel/sdk/resource"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
 )
 
 func main() {
@@ -26,6 +34,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
+
+	traceProvider, err := startTracing()
+	if err != nil {
+		log.Fatalf("Failed to start tracing : %v", err)
+	}
+
+	defer func() {
+		if err := traceProvider.Shutdown(context.Background()); err != nil {
+			log.Printf("Failed to shutdown the tracing: %v", err)
+		}
+	}()
+
+	otel.SetTracerProvider(traceProvider)
 
 	driver.InitDB()
 	defer driver.CloseDB()
@@ -41,6 +62,8 @@ func main() {
 	engineHandler := engineHandler.NewEngineHandler(engineService)
 
 	router := mux.NewRouter()
+
+	router.Use(otelmux.Middleware("Car-Management-System"))
 
 	schemaFile := "store/schema.sql"
 	if err := executeSchemaFile(db, schemaFile); err != nil {
@@ -86,4 +109,37 @@ func executeSchemaFile(db *sql.DB, fileName string) error {
 		return err
 	}
 	return nil
+}
+func startTracing() (*sdktrace.TracerProvider, error) {
+	header := map[string]string{
+		"Content-Type": "application/json",
+	}
+
+	exporter, err := otlptrace.New(
+		context.Background(),
+		otlptracehttp.NewClient(
+			otlptracehttp.WithEndpoint("jaeger:4318"),
+			otlptracehttp.WithHeaders(header),
+			otlptracehttp.WithInsecure(),
+		),
+	)
+
+	if err != nil {
+		return nil, fmt.Errorf("Error Creating new Exporter : %w", err)
+	}
+
+	traceProvider := sdktrace.NewTracerProvider(
+		sdktrace.WithBatcher(
+			exporter,
+			sdktrace.WithMaxExportBatchSize(sdktrace.DefaultMaxExportBatchSize),
+			sdktrace.WithBatchTimeout(sdktrace.DefaultScheduleDelay),
+		),
+		sdktrace.WithResource(
+			resource.NewWithAttributes(
+				semconv.SchemaURL,
+				semconv.ServiceNameKey.String("Car-Management-System"),
+			),
+		),
+	)
+	return traceProvider, nil
 }
